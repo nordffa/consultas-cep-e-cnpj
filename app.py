@@ -1,4 +1,5 @@
 import requests
+from os import system
 
 
 def extrair_numeros(texto: str):
@@ -22,6 +23,7 @@ def busca_cep(numero_cep: str):
             print(f'BAIRRO: {dados_cep["bairro"].upper()}')
             print(f'LOCALIDADE: {dados_cep["localidade"].upper()}')
             print(f'UF: {dados_cep['uf'].upper()}')
+            print(f'CEP: {dados_cep["cep"].upper()}')
 
 
 def busca_cnpj(numero_cnpj: str):
@@ -57,7 +59,11 @@ while True:
     if escolha in opcoes.keys():
         match escolha:
             case "1":
-                busca_cep(input("Digite um CEP para consultar: "))
+                cep = input("Digite um CEP para consultar: ")
+                system("cls")
+                busca_cep(cep)
             case "2":
-                busca_cnpj(input("Digite um CNPJ para consultar: "))
+                cnpj = input("Digite um CNPJ para consultar: ")
+                system("cls")
+                busca_cnpj(cnpj)
         break
