@@ -11,12 +11,12 @@ def busca_cep(numero_cep: str):
     resposta = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
 
     if resposta.status_code != 200:
-        return "CEP inválido."
+        print("CEP inválido.")
 
     else:
         dados_cep = resposta.json()
         if "erro" in dados_cep:
-            return "CEP inválido."
+            print("CEP inválido.")
         else:
             print(f'LOGRADOURO: {dados_cep["logradouro"].upper()}')
             print(f'BAIRRO: {dados_cep["bairro"].upper()}')
@@ -24,16 +24,17 @@ def busca_cep(numero_cep: str):
             print(f'UF: {dados_cep['uf'].upper()}')
 
 
-def busca_cnpj(cnpj: str):
+def busca_cnpj(numero_cnpj: str):
+    cnpj = extrair_numeros(numero_cnpj)
     resposta = requests.get(f"https://www.receitaws.com.br/v1/cnpj/{cnpj}")
 
     if resposta.status_code != 200:
-        return "CNPJ inválido."
+        print("CNPJ inválido.")
 
     else:
         dados_cnpj = resposta.json()
         if dados_cnpj["status"] != "OK":
-            return "CNPJ inválido."
+            print("CNPJ inválido.")
         else:
             print(f'CNPJ: {dados_cnpj["cnpj"]}')
             print(f'RAZAO SOCIAL: {dados_cnpj["nome"].upper()}')
@@ -47,14 +48,16 @@ def busca_cnpj(cnpj: str):
 
 
 # main
-opcoes = {1: "CEP", 2: "CNPJ"}
+opcoes = {"1": "CEP", "2": "CNPJ"}
 for k, v in opcoes.items():
     print(f"{k} para {v}")
-escolha = int(input("Escolha uma opcao para consultar: "))
 
-match escolha:
-    case 1:
-        busca_cep(input("Digite um CEP para consultar: "))
-
-    case 2:
-        busca_cnpj(input("Digite um CNPJ para consultar: "))
+while True:
+    escolha = input("Escolha uma opcao para consultar: ")
+    if escolha in opcoes.keys():
+        match escolha:
+            case "1":
+                busca_cep(input("Digite um CEP para consultar: "))
+            case "2":
+                busca_cnpj(input("Digite um CNPJ para consultar: "))
+        break
